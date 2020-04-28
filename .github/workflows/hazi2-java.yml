@@ -1,0 +1,33 @@
+name: Hazi 2 Java
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Check neptun.txt
+        uses: akosdudas/ahk-action-neptuncheck@master
+
+      - name: Prepare JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Compile with Maven
+        run: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B compile
+
+      - name: Run Java tests
+        run: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B test
+        env:
+          SPRING_MAIN_BANNER_MODE: off
+          SPRING_JPA_SHOW_SQL: false
+          LOGGING_LEVEL_ROOT: WARN
