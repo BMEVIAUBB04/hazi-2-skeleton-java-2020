@@ -105,9 +105,10 @@ public class AddressRestApiIT {
         Address newAddress = testDataHelper.createTestAddress();
         Long newId = buildPostAddressRequest(newAddress)
                 .expectStatus().isOk()
-                .expectBody(Long.class)
+                .expectBody(Address.class)
                 .returnResult()
-                .getResponseBody();
+                .getResponseBody()
+                .getId();
 
         newAddress.setId(newId);
 
@@ -123,9 +124,10 @@ public class AddressRestApiIT {
         newAddress.setGeoLng(null);
         Long newId = buildPostAddressRequest(newAddress)
                 .expectStatus().isOk()
-                .expectBody(Long.class)
+                .expectBody(Address.class)
                 .returnResult()
-                .getResponseBody();
+                .getResponseBody()
+                .getId();
 
         newAddress.setId(newId);
 
